@@ -1,0 +1,4 @@
+# pnpm runs no package's install script unless it's allowed here, and a clean install (CI, the Docker build on
+# Render) fails on any it skipped. esbuild's checks its platform binary; Vite needs it.
+allowBuilds:
+  esbuild: true

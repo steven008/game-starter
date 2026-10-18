@@ -1,0 +1,31 @@
+# Keeps the starter game working: the same checks a new game's own CI runs, on the copy every new game starts from.
+name: Starter
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: plugins/game-starter/skills/new-game/starter
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: plugins/game-starter/skills/new-game/starter/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: plugins/game-starter/skills/new-game/starter/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm lint
+      - name: Smoke test the production server
+        run: |
+          PORT=8080 pnpm start > server.log 2>&1 &
+          pnpm smoke http://localhost:8080 || { cat server.log; exit 1; }

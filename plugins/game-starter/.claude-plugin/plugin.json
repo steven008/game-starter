@@ -1,0 +1,9 @@
+{
+  "name": "game-starter",
+  "description": "Start a new multiplayer browser game with a GitHub repo, CI, Render deploys and a CLAUDE.md workflow for parallel agent sessions: /new-game.",
+  "version": "0.1.0",
+  "author": {
+    "name": "steven008"
+  },
+  "keywords": ["game", "three.js", "render", "github", "starter", "workflow"]
+}

@@ -1,0 +1,11 @@
+# Render Blueprint. Created once from Render's dashboard (the deploy link in CLAUDE.md); after that Render applies
+# changes to this file when they reach main. It builds the Dockerfile and deploys every push to main once its GitHub
+# checks pass. Rooms live in the server's memory, so keep it to one instance.
+services:
+  - type: web
+    name: my-game
+    runtime: docker
+    plan: free                      # sleeps after 15 idle minutes; 0.5c-512mb (~$7/month) is always on and can have a disk
+    autoDeployTrigger: checksPass   # deploy only once .github/workflows/ci.yml passes for the commit
+    healthCheckPath: /healthz
+    numInstances: 1

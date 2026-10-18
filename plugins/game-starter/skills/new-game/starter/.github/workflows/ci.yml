@@ -1,0 +1,26 @@
+# The same checks as before every commit, plus a smoke test of the production server. Render waits for this to pass
+# before deploying a push to main (`autoDeployTrigger: checksPass` in render.yaml).
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4        # the pnpm version in package.json's packageManager
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm lint
+      - name: Smoke test the production server
+        run: |
+          PORT=8080 pnpm start > server.log 2>&1 &
+          pnpm smoke http://localhost:8080 || { cat server.log; exit 1; }

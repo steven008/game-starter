@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "game-starter",
+  "description": "steven008's starter for new browser games",
+  "owner": {
+    "name": "steven008"
+  },
+  "plugins": [
+    {
+      "name": "game-starter",
+      "description": "Start a new multiplayer browser game with a GitHub repo, CI, Render deploys and a CLAUDE.md workflow for parallel agent sessions: /new-game.",
+      "source": "./plugins/game-starter",
+      "category": "development"
+    }
+  ]
+}
